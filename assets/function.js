@@ -27,13 +27,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 
-firebase.database().ref("Account").on("child_changed", (snapshot, error) => {
-    loadUsers();
-});
+firebase.database().ref("Account").on("child_changed", (snapshot, error) => loadUsers());
 
-firebase.database().ref("Account").on("child_removed", (snapshot, error) => {
-    loadUsers();
-});
+firebase.database().ref("Account").on("child_removed", (snapshot, error) => loadUsers());
 
 function getCounters(ref, id) {
     firebase.database().ref(ref).on("value", (snapshot, before) => {
@@ -126,6 +122,167 @@ function resetActive(username, active) {
             text: "Đây là tài khoản quản trị cao nhất!",
             type: "warning",
             timer: 1500,
+            showConfirmButton: false
+        });
+    }
+}
+
+function encodeImageFileAsURL(element, callback) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function() {
+        callback(reader.result);
+    }
+    reader.readAsDataURL(file);
+}
+
+function addUnits() {
+    var TenBai = $('#unitsName').val();
+    var ChuongSo = $('#unitsPart').val();
+    var Phan1 = $('#unitsNameContent1').val();
+    var Phan2 = $('#unitsNameContent2').val();
+    var NoiDung1 = $('#unitsContent1').val();
+    var NoiDung2 = $('#unitsContent2').val();
+    var HinhAnh1 = $('#unitsPhotos1').val();
+    var HinhAnh2 = $('#unitsPhotos2').val();
+    if (TenBai != '' && ChuongSo != '' && Phan1 != '' && Phan2 != '' && NoiDung1 != '' && NoiDung2 != '' && HinhAnh1 != '' && HinhAnh2 != '') {
+        encodeImageFileAsURL(document.getElementById('unitsPhotos1'), (dataPhotos1) => {
+            encodeImageFileAsURL(document.getElementById('unitsPhotos2'), (dataPhotos2) => {
+                firebase.database().ref("Units").push().set({
+                    Name: TenBai,
+                    Part: ChuongSo,
+                    Part1: Phan1,
+                    Part2: Phan2,
+                    Content1: NoiDung1,
+                    Content2: NoiDung2,
+                    Photos1: dataPhotos1,
+                    Photos2: dataPhotos2
+                }).then(() => {
+                    resetUnits();
+                });
+            });
+        });
+    } else {
+        swal({
+            title: "Thông báo",
+            text: "Nhập đầy đủ thông tin",
+            type: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+}
+
+function resetUnits() {
+    var MaBai = $('#unitsKeyNode').val('');
+    var TenBai = $('#unitsName').val('');
+    var ChuongSo = $('#unitsPart').val('');
+    var Phan1 = $('#unitsNameContent1').val('');
+    var Phan2 = $('#unitsNameContent2').val('');
+    var NoiDung1 = $('#unitsContent1').val('');
+    var NoiDung2 = $('#unitsContent2').val('');
+    var HinhAnh1 = $('#unitsPhotos1').val('');
+    var HinhAnh2 = $('#unitsPhotos2').val('');
+}
+
+firebase.database().ref("Units").on("child_changed", (snapshot, error) => loadUnits());
+firebase.database().ref("Units").on("child_removed", (snapshot, error) => loadUnits());
+
+function loadUnits() {
+    $('#bodyDanhSach').html("");
+    firebase.database().ref("Units").on("child_added", (snapshot, error) => {
+        $('#bodyDanhSach').append(`
+        <tr>
+            <td><input type="text" class="form-control" value="` + snapshot.val().Name + `" disabled></td>
+            <td>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().Part1 + `" disabled>
+                <input type="text" class="form-control" value="` + snapshot.val().Part2 + `" disabled>
+            </td>
+            <td>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().Content1 + `" disabled>
+                <input type="text" class="form-control" value="` + snapshot.val().Content2 + `" disabled>
+            </td>
+            <td>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().Photos1 + `" disabled>
+                <input type="text" class="form-control" value="` + snapshot.val().Photos2 + `" disabled>
+            </td>
+            <td>
+                <button style="width: 100%;" onclick="onEdit('` + snapshot.key + `','` + snapshot.val().Name + `','` + snapshot.val().Part + `','` + snapshot.val().Part1 + `','` + snapshot.val().Part2 + `','` + snapshot.val().Content1 + `','` + snapshot.val().Content2 + `')" type="button" class="btn btn-danger"><i class="icon-note"></i> &nbsp; Sửa</button>
+                <button onclick="onRemove('` + snapshot.key + `')" style="margin-top: 15px; width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
+            </td>
+        </tr>
+        `);
+    });
+}
+
+function onRemove(key) {
+    firebase.database().ref("Units").child(key).remove();
+}
+
+function onEdit(key, name, part, part1, part2, content1, content2) {
+    var MaBai = $('#unitsKeyNode').val(key);
+    var TenBai = $('#unitsName').val(name);
+    var ChuongSo = $('#unitsPart').val(part);
+    var Phan1 = $('#unitsNameContent1').val(part1);
+    var Phan2 = $('#unitsNameContent2').val(part2);
+    var NoiDung1 = $('#unitsContent1').val(content1);
+    var NoiDung2 = $('#unitsContent2').val(content2);
+}
+
+function onSubmitUpdate() {
+    var MaBai = $('#unitsKeyNode').val();
+    if (MaBai != '') {
+        var TenBai = $('#unitsName').val();
+        var ChuongSo = $('#unitsPart').val();
+        var Phan1 = $('#unitsNameContent1').val();
+        var Phan2 = $('#unitsNameContent2').val();
+        var NoiDung1 = $('#unitsContent1').val();
+        var NoiDung2 = $('#unitsContent2').val();
+        if ($('#unitsPhotos1').val() == '' && $('#unitsPhotos2').val() == '') {
+            firebase.database().ref("Units").child(MaBai).update({
+                Name: TenBai,
+                Part: ChuongSo,
+                Part1: Phan1,
+                Part2: Phan2,
+                Content1: NoiDung1,
+                Content2: NoiDung2,
+            }).then(() => {
+                resetUnits();
+            });;
+        } else {
+            if ($('#unitsPhotos1').val() != '' && $('#unitsPhotos2').val() != '') {
+                encodeImageFileAsURL(document.getElementById('unitsPhotos1'), (dataPhotos1) => {
+                    encodeImageFileAsURL(document.getElementById('unitsPhotos2'), (dataPhotos2) => {
+                        firebase.database().ref("Units").child(MaBai).update({
+                            Name: TenBai,
+                            Part: ChuongSo,
+                            Part1: Phan1,
+                            Part2: Phan2,
+                            Content1: NoiDung1,
+                            Content2: NoiDung2,
+                            Photos1: dataPhotos1,
+                            Photos2: dataPhotos2
+                        }).then(() => {
+                            resetUnits();
+                        });
+                    });
+                });
+            } else {
+                swal({
+                    text: "Bạn chưa chọn hình ảnh đầy đủ để cập nhật",
+                    type: "error",
+                    title: "Opps!",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            }
+        }
+    } else {
+        swal({
+            text: "Bạn chưa chọn bài để cập nhật",
+            type: "error",
+            title: "Thông báo",
+            timer: 1000,
             showConfirmButton: false
         });
     }
