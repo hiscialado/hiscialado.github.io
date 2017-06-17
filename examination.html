@@ -13,36 +13,140 @@
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body style="font-family: Quicksand;" onload="dialogLoading();">
-    <header>
-        <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
-            <a class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
-        </nav>
-    </header>
-    <div class="container" style="margin-top: 50px;">
-        <div class="col-md-12" style="padding-top: 20px;">
-            <div class="row">
-                <div class="col-md-8" style="margin-bottom: 20px;">
-
-                </div>
-                <div class="col-md-4" style="margin-bottom: 20px;">
-                    <label class="btn btn-primary btn-block" style="text-align: left;"><i class="icon-login"></i> &nbsp; Thành viên</label>
-                    <div class="col-md-12">
+<body style="font-family: Quicksand; background-color: #EEE;" onload="loadExamination(); dialogLoading();">
+    <div class="container" style="min-height: 100vh; background-color: white; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        <header>
+            <nav class="navbar navbar-toggleable-md bg-faded" style="background-color: white; color: gray;">
+                <a style="color: gray;" class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
+            </nav>
+        </header>
+        <div class="container" style="margin-top: 0px;">
+            <div class="col-md-12" style="padding-top: 20px;">
+                <div class="row">
+                    <div class="col-md-12" style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 20px;">Thêm câu hỏi</h4>
                         <div class="row">
-                            <div class="col-md-12" style="margin-top: 20px;">
-                                <div class="form-group">
-                                    <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
-                                    <input type="text" class="form-control" id="userNames">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="examKeyNode"> <i class="icon-folder"></i> &nbsp; Mã câu hỏi</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examKeyNode" rows="1" disabled></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="examQuestions"> <i class="icon-folder"></i> &nbsp; Nội dung câu hỏi</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examQuestions" rows="2"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group" id="passWordDock">
-                                    <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
-                                    <input type="password" class="form-control" id="passWords">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="examA"> <i class="icon-folder"></i> &nbsp; Đáp án thứ nhất</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examA" rows="2"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="examB"> <i class="icon-folder"></i> &nbsp; Đáp án thứ hai</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examB" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="examC"> <i class="icon-folder"></i> &nbsp; Đáp án thứ ba</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examC" rows="2"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="examD"> <i class="icon-folder"></i> &nbsp; Đáp án thứ tư</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examD" rows="2"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group text-right" id="loginDock">
-                                    <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="examAnswer"><i class="icon-folder"></i> &nbsp; Đáp án đúng</label>
+                                            <select class="form-control" id="examAnswer">
+                                                <option>A</option>
+                                                <option>B</option>
+                                                <option>C</option>
+                                                <option>D</option>                                           
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="examDetails"> <i class="icon-folder"></i> &nbsp; Giải thích đáp án</label>
+                                            <textarea type="text" autocomplete="false" class="form-control" id="examDetails" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="examParts"><i class="icon-folder"></i> &nbsp; Chương số</label>
+                                            <select class="form-control" id="examParts">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>                                           
+                                                <option>5</option>                                           
+                                                <option>6</option>                                           
+                                                <option>7</option>                                           
+                                                <option>8</option>                                           
+                                                <option>9</option>                                           
+                                                <option>10</option>                                           
+                                                <option>11</option>                                           
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button onclick="addExamination();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-plus"></i> &nbsp; Thêm</button>
+                                        <button onclick="onSubmitEditExamination();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-refresh"></i> &nbsp; Cập nhật</button>
+                                    </div>
                                 </div>
-                                <div class="form-group text-right" id="logoutDock" style="display: none;">
-                                    <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 20px;">Danh sách câu hỏi</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-responsive table-bordered" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Câu hỏi</th>
+                                            <th>Đáp án</th>
+                                            <th>Giải thích</th>
+                                            <th>Chính xác</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyDanhSachCauHoi">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: none;">
+                        <label class="btn btn-primary btn-block" style="text-align: left;"><i class="icon-login"></i> &nbsp; Thành viên</label>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 20px;">
+                                    <div class="form-group">
+                                        <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
+                                        <input type="text" class="form-control" id="userNames">
+                                    </div>
+                                    <div class="form-group" id="passWordDock">
+                                        <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
+                                        <input type="password" class="form-control" id="passWords">
+                                    </div>
+                                    <div class="form-group text-right" id="loginDock">
+                                        <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
+                                    </div>
+                                    <div class="form-group text-right" id="logoutDock" style="display: none;">
+                                        <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

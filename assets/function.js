@@ -305,3 +305,305 @@ function loadUsersActive() {
         }
     });
 }
+
+function addExamination() {
+    var DapAn = $("#examAnswer").val();
+    var CauHoi = $("#examQuestions").val();
+    var A = $("#examA").val();
+    var B = $("#examB").val();
+    var C = $("#examC").val();
+    var D = $("#examD").val();
+    var GiaiThich = $("#examDetails").val();
+    var ChuongSo = $("#examParts").val();
+    if (DapAn != '' && A != '' && B != '' && C != '' && D != '' && CauHoi != '' && GiaiThich != '' && ChuongSo != '') {
+        var NoiDungDapAn = '';
+        if (DapAn == 'A') NoiDungDapAn = A;
+        if (DapAn == 'B') NoiDungDapAn = B;
+        if (DapAn == 'C') NoiDungDapAn = C;
+        if (DapAn == 'D') NoiDungDapAn = D;
+        firebase.database().ref("Exam").push().set({
+            Parts: ChuongSo,
+            Question: CauHoi,
+            A: A,
+            B: B,
+            C: C,
+            D: D,
+            Details: GiaiThich,
+            Answer: NoiDungDapAn
+        }).then(() => resetExamination());
+    } else {
+        swal({
+            type: "warning",
+            title: "Opps!",
+            text: "Bạn chưa nhập thông tin đầy đủ",
+            timer: 1000,
+            showConfirmButton: false
+        })
+    }
+}
+
+function resetExamination() {
+    var keynode = $('#examKeyNode').val('');
+    var DapAn = $("#examAnswer").val('A');
+    var CauHoi = $("#examQuestions").val('');
+    var A = $("#examA").val('');
+    var B = $("#examB").val('');
+    var C = $("#examC").val('');
+    var D = $("#examD").val('');
+    var GiaiThich = $("#examDetails").val('');
+    var ChuongSo = $("#examParts").val('1');
+}
+
+firebase.database().ref("Exam").on("child_changed", (snapshot, error) => loadExamination());
+firebase.database().ref("Exam").on("child_removed", (snapshot, error) => loadExamination());
+
+function loadExamination() {
+    $('#bodyDanhSachCauHoi').html("");
+    firebase.database().ref("Exam").on("child_added", (snapshot, error) => {
+        $('#bodyDanhSachCauHoi').append(
+            `
+        <tr>
+            <td><input type="text" class="form-control" value="` + snapshot.val().Question + `" disabled></td>
+            <td>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().A + `" disabled>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().B + `" disabled>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().C + `" disabled>
+                <input type="text" class="form-control" value="` + snapshot.val().D + `" disabled>
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Details + `" disabled>                
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Answer + `" disabled>                
+            </td>
+            <td>
+                <button style="width: 100%;" onclick="onExamEdit('` + snapshot.key + `','` + snapshot.val().Question + `','` + snapshot.val().A + `','` + snapshot.val().B + `','` + snapshot.val().C + `','` + snapshot.val().D + `','` + snapshot.val().Details + `','` + snapshot.val().Answer + `','` + snapshot.val().Parts + `')" type="button" class="btn btn-danger"><i class="icon-note"></i> &nbsp; Sửa</button>
+                <button onclick="onExamRemove('` + snapshot.key + `')" style="margin-top: 15px; width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
+            </td>
+        </tr>
+            `
+        );
+    });
+}
+
+function onExamEdit(key, cauhoi, a, b, c, d, giaithich, dapan, chuongso) {
+    $('#examKeyNode').val(key);
+
+    if (dapan == a) $("#examAnswer").val('A');
+    if (dapan == b) $("#examAnswer").val('B');
+    if (dapan == c) $("#examAnswer").val('C');
+    if (dapan == d) $("#examAnswer").val('D');
+
+    var CauHoi = $("#examQuestions").val(cauhoi);
+    var A = $("#examA").val(a);
+    var B = $("#examB").val(b);
+    var C = $("#examC").val(c);
+    var D = $("#examD").val(d);
+    var GiaiThich = $("#examDetails").val(giaithich);
+    var ChuongSo = $("#examParts").val(chuongso);
+}
+
+function onExamRemove(key) {
+    firebase.database().ref("Exam").child(key).remove();
+}
+
+function onSubmitEditExamination() {
+    var DapAn = $("#examAnswer").val();
+    var CauHoi = $("#examQuestions").val();
+    var A = $("#examA").val();
+    var B = $("#examB").val();
+    var C = $("#examC").val();
+    var D = $("#examD").val();
+    var GiaiThich = $("#examDetails").val();
+    var ChuongSo = $("#examParts").val();
+    var key = $("#examKeyNode").val();
+    if ($('#examKeyNode').val() != '') {
+        var NoiDungDapAn = '';
+        if (DapAn == 'A') NoiDungDapAn = A;
+        if (DapAn == 'B') NoiDungDapAn = B;
+        if (DapAn == 'C') NoiDungDapAn = C;
+        if (DapAn == 'D') NoiDungDapAn = D;
+        firebase.database().ref("Exam").child(key).update({
+            Parts: ChuongSo,
+            Question: CauHoi,
+            A: A,
+            B: B,
+            C: C,
+            D: D,
+            Details: GiaiThich,
+            Answer: NoiDungDapAn
+        }).then(() => resetExamination());
+    } else {
+        swal({
+            type: "error",
+            title: "Opps!",
+            text: "Bạn chưa chọn câu hỏi",
+            timer: 1000,
+            showConfirmButton: false
+        })
+    }
+}
+
+firebase.database().ref("Forums").on("child_changed", (snapshot, error) => loadForums());
+firebase.database().ref("Forums").on("child_removed", (snapshot, error) => loadForums());
+firebase.database().ref("Comments").on("child_changed", (snapshot, error) => loadForums());
+firebase.database().ref("Comments").on("child_removed", (snapshot, error) => loadForums());
+
+function loadForums() {
+    loadPost();
+    loadComm();
+}
+
+function loadPost() {
+    $('#bodyDienDan').html("");
+    firebase.database().ref("Forums").on("child_added", (snapshot, error) => {
+        $('#bodyDienDan').append(
+            `
+        <tr>
+            <td><input type="text" class="form-control" value="` + snapshot.val().Username + `" disabled></td>
+            <td>
+                <textarea style="margin-bottom: 0px;" type="text" class="form-control" disabled>` + snapshot.val().Contents + `</textarea>
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Photos + `" disabled>                
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Liked + `" disabled>                
+            </td>
+            <td>                
+                <button onclick="removeForum('` + snapshot.key + `', 'Forums')" style="width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
+            </td>
+        </tr>
+            `
+        );
+    })
+}
+
+function loadComm() {
+    $('#bodyBinhLuan').html("");
+    firebase.database().ref("Comments").on("child_added", (snapshot, error) => {
+        $('#bodyBinhLuan').append(
+            `
+        <tr>
+            <td><input type="text" class="form-control" value="` + snapshot.val().Username + `" disabled></td>
+            <td>
+                <textarea style="margin-bottom: 0px;" type="text" class="form-control" disabled>` + snapshot.val().Contents + `</textarea>
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Photos + `" disabled>                
+            </td>
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Keynode + `" disabled>                
+            </td>
+            <td>                
+                <button onclick="removeForum('` + snapshot.key + `', 'Comments')" style="width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
+            </td>
+        </tr>
+            `
+        );
+    })
+}
+
+function removeForum(key, node) {
+    firebase.database().ref(node).child(key).remove();
+}
+
+firebase.database().ref("Entertainments").on("child_changed", (snapshot, error) => loadEntertainmenst());
+firebase.database().ref("Entertainments").on("child_removed", (snapshot, error) => loadEntertainmenst());
+
+function loadEntertainmenst() {
+    $('#bodyDanhSachCauDo').html("");
+    firebase.database().ref("Entertainments").on("child_added", (snapshot, error) => {
+        $('#bodyDanhSachCauDo').append(
+            `
+             <tr>
+            <td><input type="text" class="form-control" value="` + snapshot.val().Key + `" disabled></td>         
+            <td>
+                <input type="text" class="form-control" value="` + snapshot.val().Photos + `" disabled>                
+            </td>
+            <td>
+                <textarea rows="5" type="text" class="form-control" disabled>` + snapshot.val().Details + `</textarea> 
+            </td>
+            <td>
+                <button style="width: 100%;" onclick="onEntEdit('` + snapshot.key + `')" type="button" class="btn btn-danger"><i class="icon-note"></i> &nbsp; Sửa</button>
+                <button onclick="onEntertainemntRemove('` + snapshot.key + `')" style="margin-top: 15px; width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
+            </td>
+        </tr>
+            `
+        );
+    });
+}
+
+function onEntertainemntRemove(key) {
+    firebase.database().ref("Entertainments").child(key).remove();
+}
+
+function onEntEdit(node) {
+    $('#entKeynode').val(node);
+    firebase.database().ref("Entertainments").child(node).on("value", (snapshot, error) => {
+        var key = $('#entAnswer').val(snapshot.val().Key);
+        var details = $('#entDetails').val(snapshot.val().Details);
+    })
+}
+
+function addEnt() {
+    var key = $('#entAnswer').val();
+    var details = $('#entDetails').val();
+    var photos = $('#entPhotos').val();
+    if (key != '' && details != '' && photos != '') {
+        encodeImageFileAsURL(document.getElementById("entPhotos"), (data) => {
+            firebase.database().ref("Entertainments").push().set({
+                Key: key,
+                Photos: data,
+                Details: details
+            }).then(() => resetEnt());
+        })
+    } else {
+        swal({
+            type: "error",
+            title: "Opps!",
+            text: "Chưa nhập thông tin",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+}
+
+function resetEnt() {
+    $('#entAlert').html('');
+    var node = $('#entKeynode').val('');
+    var key = $('#entAnswer').val('');
+    var details = $('#entDetails').val('');
+    var photos = $('#entPhotos').val('');
+}
+
+function submitEnt() {
+    var node = $('#entKeynode').val();
+    var key = $('#entAnswer').val();
+    var details = $('#entDetails').val();
+    var photos = $('#entPhotos').val();
+    if (node != '') {
+        if (photos != '') {
+            encodeImageFileAsURL(document.getElementById("entPhotos"), (data) => {
+                firebase.database().ref("Entertainments").child(node).update({
+                    Key: key,
+                    Photos: data,
+                    Details: details
+                }).then(() => resetEnt());
+            })
+        } else {
+            firebase.database().ref("Entertainments").child(node).update({
+                Key: key,
+                Details: details
+            }).then(() => resetEnt());
+        }
+    } else {
+        swal({
+            type: "error",
+            title: "Opps!",
+            text: "Chưa chọn câu đố để sửa thông tin",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+};

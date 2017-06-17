@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Diễn đàn :: Quản trị dữ liệu Hiscial</title>
+    <title>Hỏi đáp :: Quản trị dữ liệu Hiscial</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
@@ -13,36 +13,79 @@
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body style="font-family: Quicksand;" onload="dialogLoading();">
-    <header>
-        <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
-            <a class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
-        </nav>
-    </header>
-    <div class="container" style="margin-top: 50px;">
-        <div class="col-md-12" style="padding-top: 20px;">
-            <div class="row">
-                <div class="col-md-8" style="margin-bottom: 20px;">
+<body style="font-family: Quicksand; background-color: #EEE;" onload="loadForums(); dialogLoading();">
+    <div class="container" style="min-height: 100vh; background-color: white; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        <header>
+            <nav class="navbar navbar-toggleable-md bg-faded" style="background-color: white; color: gray;">
+                <a style="color: gray;" class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
+            </nav>
+        </header>
+        <div class="container" style="margin-top: 0px;">
+            <div class="col-md-12" style="padding-top: 20px;">
+                <div class="row">
+                    <div class="col-md-12" style="margin-bottom: 20px;">
+                        <div class="col-md-12" id="DanhSachBaiDang" style="margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 20px;">Danh sách bài đăng</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-responsive table-bordered" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Người đăng</th>
+                                                <th>Nội dung đăng</th>
+                                                <th>Hình ảnh</th>
+                                                <th>Lượt thích</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyDienDan">
 
-                </div>
-                <div class="col-md-4" style="margin-bottom: 20px;">
-                    <label class="btn btn-primary btn-block" style="text-align: left;"><i class="icon-login"></i> &nbsp; Thành viên</label>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top: 20px;">
-                                <div class="form-group">
-                                    <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
-                                    <input type="text" class="form-control" id="userNames">
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="form-group" id="passWordDock">
-                                    <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
-                                    <input type="password" class="form-control" id="passWords">
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="DanhSachBaiDang" style="margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 20px;">Danh sách bình luận</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-responsive table-bordered" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Người đăng</th>
+                                                <th>Nội dung đăng</th>
+                                                <th>Hình ảnh</th>
+                                                <th>Mã bài đăng</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyBinhLuan">
+
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="form-group text-right" id="loginDock">
-                                    <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
-                                </div>
-                                <div class="form-group text-right" id="logoutDock" style="display: none;">
-                                    <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: none;">
+                        <label class="btn btn-primary btn-block" style="text-align: left;"><i class="icon-login"></i> &nbsp; Thành viên</label>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 20px;">
+                                    <div class="form-group">
+                                        <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
+                                        <input type="text" class="form-control" id="userNames">
+                                    </div>
+                                    <div class="form-group" id="passWordDock">
+                                        <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
+                                        <input type="password" class="form-control" id="passWords">
+                                    </div>
+                                    <div class="form-group text-right" id="loginDock">
+                                        <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
+                                    </div>
+                                    <div class="form-group text-right" id="logoutDock" style="display: none;">
+                                        <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
