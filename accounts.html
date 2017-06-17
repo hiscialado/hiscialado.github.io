@@ -13,41 +13,42 @@
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body style="font-family: Quicksand;" onload="dialogLoading(); loadUsers();">
-    <header>
-        <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
-            <a class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
-        </nav>
-    </header>
-    <div class="container" style="margin-top: 50px;">
-        <div class="col-md-12" style="padding-top: 20px;">
-            <div class="row">
-                <div class="col-md-8" style="margin-bottom: 20px;">
-                    <h4 style="margin-top: 20px; margin-bottom: 20px;"><i class="icon-user"></i> &nbsp; Danh sách thành viên</h4>
-                    <div class="col-md-12">
-                        <div class="row" id="danhSachThanhVien">
+<body style="font-family: Quicksand; background-color: #EEE;" onload="dialogLoading(); loadUsers();">
+    <div class="container" style="min-height: 100vh; background-color: white; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        <header>
+            <nav class="navbar navbar-toggleable-md bg-faded" style="background-color: white; color: gray;">
+                <a style="color: gray;" class="navbar-brand" href="index.html"><i class="icon-home"></i> &nbsp; Hiscial Ado</a>
+            </nav>
+        </header>
+        <div class="container" style="margin-top: 0px;">
+            <div class="col-md-12" style="padding-top: 20px;">
+                <div class="row">
+                    <div class="col-md-8" style="margin-bottom: 20px;">
+                        <h4 style="margin-top: 20px; margin-bottom: 20px;"><i class="icon-user"></i> &nbsp; Danh sách thành viên</h4>
+                        <div class="col-md-12">
+                            <div class="row" id="danhSachThanhVien">
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4" style="margin-bottom: 20px;">
-                    <label class="btn btn-primary btn-block" style="text-align: left;"><i class="icon-login"></i> &nbsp; Thành viên</label>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top: 20px;">
-                                <div class="form-group">
-                                    <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
-                                    <input type="text" class="form-control" id="userNames">
-                                </div>
-                                <div class="form-group" id="passWordDock">
-                                    <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
-                                    <input type="password" class="form-control" id="passWords">
-                                </div>
-                                <div class="form-group text-right" id="loginDock">
-                                    <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
-                                </div>
-                                <div class="form-group text-right" id="logoutDock" style="display: none;">
-                                    <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                    <div class="col-md-4" style="margin-bottom: 20px;">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 0px;">
+                                    <div class="form-group">
+                                        <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
+                                        <input type="text" class="form-control" id="userNames">
+                                    </div>
+                                    <div class="form-group" id="passWordDock">
+                                        <label for="passWords"> <i class="icon-lock"></i> &nbsp; Mật khẩu</label>
+                                        <input type="password" class="form-control" id="passWords">
+                                    </div>
+                                    <div class="form-group text-right" id="loginDock">
+                                        <button onclick="onLogin();" type="button" class="btn btn-danger" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng nhập</button>
+                                    </div>
+                                    <div class="form-group text-right" id="logoutDock" style="display: none;">
+                                        <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
