@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body style="font-family: Quicksand; background-color: #EEE;" onload="dialogLoading(); getCounters('Account', 'countAccounts'); getCounters('Units', 'countUnits')">
+<body style="font-family: Quicksand; background-color: #EEE;" onload="loadUsersActive(); getCounters('Account', 'countAccounts'); getCounters('Units', 'countUnits'); dialogLoading();">
     <div class="container" style="background-color: white; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
         <header>
             <nav class="navbar navbar-toggleable-md bg-faded container" style="background-color: white; color: gray;">
@@ -26,7 +26,7 @@
                     <div class="col-md-8" style="margin-bottom: 20px;">
                         <div class="col-md-12">
                             <div class="row">
-                                <div data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Tổng số lượt truy cập" class="col-md-3 items">
+                                <div data-animation="false" data-toggle="tooltip" data-placement="top" title="Tổng số lượt truy cập" class="col-md-3 items">
                                     <i style="font-size: 75px;" class="icon-graph"></i>
                                     <h5 id="countCounters" style="margin-top: 15px;">000</h5>
                                 </div> .
@@ -35,23 +35,23 @@
                         <div class="col-md-12">
                             <h4 style="margin-top: 20px;"><i class="icon-present"></i> &nbsp; Dữ liệu</h4>
                             <div class="row"> .
-                                <div onclick="gotoUrl('accounts.html')" data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Số lượng thành viên" class="col-md-3 items" style="background-color: #e74c3c;">
+                                <div onclick="gotoUrl('accounts.html')" data-animation="false" data-toggle="tooltip" data-placement="top" title="Số lượng thành viên" class="col-md-3 items" style="background-color: #e74c3c;">
                                     <i style="font-size: 75px;" class="icon-user"></i>
                                     <h5 id="countAccounts" style="margin-top: 15px;">000</h5>
                                 </div>
-                                <div onclick="gotoUrl('units.html')" data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Tổng bài học hiện có" class="col-md-3 items" style="background-color: #27ae60;">
+                                <div onclick="gotoUrl('units.html')" data-animation="false" data-toggle="tooltip" data-placement="top" title="Tổng bài học hiện có" class="col-md-3 items" style="background-color: #27ae60;">
                                     <i style="font-size: 75px;" class="icon-docs"></i>
                                     <h5 id="countUnits" style="margin-top: 15px;">000</h5>
                                 </div>
-                                <div onclick="gotoUrl('examination.html')" data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Tổng số câu hỏi hiện có" class="col-md-3 items" style="background-color: #8e44ad;">
+                                <div onclick="gotoUrl('examination.html')" data-animation="false" data-toggle="tooltip" data-placement="top" title="Tổng số câu hỏi hiện có" class="col-md-3 items" style="background-color: #8e44ad;">
                                     <i style="font-size: 75px;" class="icon-note"></i>
                                     <h5 id="countExams" style="margin-top: 15px;">000</h5>
                                 </div>
-                                <div onclick="gotoUrl('forum.html')" data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Quản lí diễn đàn" class="col-md-3 items" style="background-color: #2c3e50;">
+                                <div onclick="gotoUrl('forum.html')" data-animation="false" data-toggle="tooltip" data-placement="top" title="Quản lí diễn đàn" class="col-md-3 items" style="background-color: #2c3e50;">
                                     <i style="font-size: 75px;" class="icon-bubbles"></i>
                                     <h5 style="margin-top: 15px;">Diễn đàn</h5>
                                 </div>
-                                <div onclick="gotoUrl('entertainment.html')" data-animation="false" data-toggle="tooltip" data-placement="bottom" title="Giải trí" class="col-md-3 items" style="background-color: #d35400;">
+                                <div onclick="gotoUrl('entertainment.html')" data-animation="false" data-toggle="tooltip" data-placement="top" title="Giải trí" class="col-md-3 items" style="background-color: #d35400;">
                                     <i style="font-size: 75px;" class="icon-present"></i>
                                     <h5 style="margin-top: 15px;">Giải trí</h5>
                                 </div>
@@ -61,7 +61,7 @@
                     <div class="col-md-4" style="margin-bottom: 20px; margin-top: 10px;">
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-12" style="margin-top: 00px;">
+                                <div class="col-md-12" style="margin-bottom: 20px;">
                                     <div class="form-group">
                                         <label for="userNames"> <i class="icon-user"></i> &nbsp; Tài khoản</label>
                                         <input type="text" class="form-control" id="userNames">
@@ -75,6 +75,12 @@
                                     </div>
                                     <div class="form-group text-right" id="logoutDock" style="display: none;">
                                         <button onclick="onLogout();" type="button" class="btn btn-success" style="text-align: left;"><i class="icon-logout"></i> &nbsp; Đăng xuất</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-bottom: 20px;">
+                                    <label> <i class="icon-user-follow"></i> &nbsp; Danh sách quản trị viên</label>
+                                    <div class="row">
+                                        <div class="col-md-12" id="DanhSachQuanTri" style="padding-top: 15px;"></div>
                                     </div>
                                 </div>
                             </div>

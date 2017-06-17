@@ -287,3 +287,21 @@ function onSubmitUpdate() {
         });
     }
 }
+
+
+function loadUsersActive() {
+    $('#DanhSachQuanTri').html("");
+    firebase.database().ref("Account").on("child_added", (snapshot, error) => {
+        if (snapshot.val().Active == 1) {
+            $('#DanhSachQuanTri').append(`
+            <div class="media" style="margin-bottom: 15px">
+            <img class="d-flex mr-3 img-thumbnail" style="max-width: 75px;" src="` + snapshot.val().Photos + `">
+            <div class="media-body" style="width: 100%;">
+              <h5 style="line-height: 2.0" class="mt-0">` + snapshot.val().Fullname + `</h5>
+              <h6>#` + snapshot.val().Username + `</h6>
+            </div>
+          </div>
+            `);
+        }
+    });
+}
