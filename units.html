@@ -66,6 +66,7 @@
                                                 </button>
                                                     <label style="border: none; color: gray;" id="unitsAlert1"></label>
                                                 </div>
+
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -86,6 +87,21 @@
                                                     <label style="border: none; color: gray;" id="unitsAlert2"></label>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="unitsVideo"> <i class="icon-folder"></i> &nbsp; Phim tài liệu bài học</label>
+                                                    <input type="text" autocomplete="false" class="form-control" id="unitsVideo">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label style="border: none;"><i class="icon-picture"></i> &nbsp; Hình ảnh bìa</label>
+                                                    <br>
+                                                    <input onchange="$('#unitsAlertBanner').html('&nbsp; &nbsp; Đã chọn hình ảnh');" style="display: none;" id="unitsPhotosBanner" type="file" />
+                                                    <button type="button" onclick="$('#unitsPhotosBanner').click()" class="btn btn-warning">
+                                                    Chọn hình ảnh
+                                                </button>
+                                                    <label style="border: none; color: gray;" id="unitsAlertBanner"></label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +119,7 @@
                                                     <th>Tên phần</th>
                                                     <th>Nội dung</th>
                                                     <th>Hình ảnh</th>
+                                                    <th>Khác</th>
                                                     <th>Hành động</th>
                                                 </tr>
                                             </thead>

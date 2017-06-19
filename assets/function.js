@@ -145,20 +145,26 @@ function addUnits() {
     var NoiDung2 = $('#unitsContent2').val();
     var HinhAnh1 = $('#unitsPhotos1').val();
     var HinhAnh2 = $('#unitsPhotos2').val();
-    if (TenBai != '' && ChuongSo != '' && Phan1 != '' && Phan2 != '' && NoiDung1 != '' && NoiDung2 != '' && HinhAnh1 != '' && HinhAnh2 != '') {
+    var Phim = $('#unitsVideo').val();
+    var AnhBia = $('#unitsPhotosBanner').val();
+    if (Phim != '' && AnhBia != '' && TenBai != '' && ChuongSo != '' && Phan1 != '' && Phan2 != '' && NoiDung1 != '' && NoiDung2 != '' && HinhAnh1 != '' && HinhAnh2 != '') {
         encodeImageFileAsURL(document.getElementById('unitsPhotos1'), (dataPhotos1) => {
             encodeImageFileAsURL(document.getElementById('unitsPhotos2'), (dataPhotos2) => {
-                firebase.database().ref("Units").push().set({
-                    Name: TenBai,
-                    Part: ChuongSo,
-                    Part1: Phan1,
-                    Part2: Phan2,
-                    Content1: NoiDung1,
-                    Content2: NoiDung2,
-                    Photos1: dataPhotos1,
-                    Photos2: dataPhotos2
-                }).then(() => {
-                    resetUnits();
+                encodeImageFileAsURL(document.getElementById('unitsPhotosBanner'), (dataPhotosCover) => {
+                    firebase.database().ref("Units").push().set({
+                        Name: TenBai,
+                        Part: ChuongSo,
+                        Part1: Phan1,
+                        Part2: Phan2,
+                        Content1: NoiDung1,
+                        Content2: NoiDung2,
+                        Photos1: dataPhotos1,
+                        Photos2: dataPhotos2,
+                        Videos: Phim,
+                        Covers: dataPhotosCover
+                    }).then(() => {
+                        resetUnits();
+                    });
                 });
             });
         });
@@ -174,6 +180,9 @@ function addUnits() {
 }
 
 function resetUnits() {
+    $('#unitsAlert1').html('');
+    $('#unitsAlert2').html('');
+    $('#unitsAlertBanner').html('');
     var MaBai = $('#unitsKeyNode').val('');
     var TenBai = $('#unitsName').val('');
     var ChuongSo = $('#unitsPart').val('');
@@ -183,6 +192,8 @@ function resetUnits() {
     var NoiDung2 = $('#unitsContent2').val('');
     var HinhAnh1 = $('#unitsPhotos1').val('');
     var HinhAnh2 = $('#unitsPhotos2').val('');
+    var Phim = $('#unitsVideo').val('');
+    var AnhBia = $('#unitsPhotosBanner').val('');
 }
 
 firebase.database().ref("Units").on("child_changed", (snapshot, error) => loadUnits());
@@ -207,7 +218,11 @@ function loadUnits() {
                 <input type="text" class="form-control" value="` + snapshot.val().Photos2 + `" disabled>
             </td>
             <td>
-                <button style="width: 100%;" onclick="onEdit('` + snapshot.key + `','` + snapshot.val().Name + `','` + snapshot.val().Part + `','` + snapshot.val().Part1 + `','` + snapshot.val().Part2 + `','` + snapshot.val().Content1 + `','` + snapshot.val().Content2 + `')" type="button" class="btn btn-danger"><i class="icon-note"></i> &nbsp; Sửa</button>
+                <input style="margin-bottom: 15px;" type="text" class="form-control" value="` + snapshot.val().Videos + `" disabled>
+                <input type="text" class="form-control" value="` + snapshot.val().Covers + `" disabled>
+            </td>
+            <td>
+                <button onclick="onEdit('` + snapshot.key + `')" type="button" class="btn btn-danger"><i class="icon-note"></i> &nbsp; Sửa</button>
                 <button onclick="onRemove('` + snapshot.key + `')" style="margin-top: 15px; width: 100%;" type="button" class="btn btn-success"><i class="icon-close"></i> &nbsp; Xóa</button>
             </td>
         </tr>
@@ -219,14 +234,17 @@ function onRemove(key) {
     firebase.database().ref("Units").child(key).remove();
 }
 
-function onEdit(key, name, part, part1, part2, content1, content2) {
-    var MaBai = $('#unitsKeyNode').val(key);
-    var TenBai = $('#unitsName').val(name);
-    var ChuongSo = $('#unitsPart').val(part);
-    var Phan1 = $('#unitsNameContent1').val(part1);
-    var Phan2 = $('#unitsNameContent2').val(part2);
-    var NoiDung1 = $('#unitsContent1').val(content1);
-    var NoiDung2 = $('#unitsContent2').val(content2);
+function onEdit(key) {
+    firebase.database().ref("Units").child(key).on('value', (snapshot, error) => {
+        var MaBai = $('#unitsKeyNode').val(key);
+        var TenBai = $('#unitsName').val(snapshot.val().Name);
+        var ChuongSo = $('#unitsPart').val(snapshot.val().Part);
+        var Phan1 = $('#unitsNameContent1').val(snapshot.val().Part1);
+        var Phan2 = $('#unitsNameContent2').val(snapshot.val().Part2);
+        var NoiDung1 = $('#unitsContent1').val(snapshot.val().Content1);
+        var NoiDung2 = $('#unitsContent2').val(snapshot.val().Content2);
+        var Phim = $('#unitsVideo').val(snapshot.val().Videos);
+    });
 }
 
 function onSubmitUpdate() {
@@ -238,7 +256,8 @@ function onSubmitUpdate() {
         var Phan2 = $('#unitsNameContent2').val();
         var NoiDung1 = $('#unitsContent1').val();
         var NoiDung2 = $('#unitsContent2').val();
-        if ($('#unitsPhotos1').val() == '' && $('#unitsPhotos2').val() == '') {
+        var Phim = $('#unitsVideo').val();
+        if ($('#unitsPhotos1').val() == '' && $('#unitsPhotos2').val() == '' && $('#unitsPhotosBanner').val() == '') {
             firebase.database().ref("Units").child(MaBai).update({
                 Name: TenBai,
                 Part: ChuongSo,
@@ -246,24 +265,29 @@ function onSubmitUpdate() {
                 Part2: Phan2,
                 Content1: NoiDung1,
                 Content2: NoiDung2,
+                Videos: Phim
             }).then(() => {
                 resetUnits();
             });;
         } else {
-            if ($('#unitsPhotos1').val() != '' && $('#unitsPhotos2').val() != '') {
+            if ($('#unitsPhotos1').val() != '' && $('#unitsPhotos2').val() != '' && $('#unitsPhotosBanner').val() != '') {
                 encodeImageFileAsURL(document.getElementById('unitsPhotos1'), (dataPhotos1) => {
                     encodeImageFileAsURL(document.getElementById('unitsPhotos2'), (dataPhotos2) => {
-                        firebase.database().ref("Units").child(MaBai).update({
-                            Name: TenBai,
-                            Part: ChuongSo,
-                            Part1: Phan1,
-                            Part2: Phan2,
-                            Content1: NoiDung1,
-                            Content2: NoiDung2,
-                            Photos1: dataPhotos1,
-                            Photos2: dataPhotos2
-                        }).then(() => {
-                            resetUnits();
+                        encodeImageFileAsURL(document.getElementById('unitsPhotosBanner'), (dataPhotosBanner) => {
+                            firebase.database().ref("Units").child(MaBai).update({
+                                Name: TenBai,
+                                Part: ChuongSo,
+                                Part1: Phan1,
+                                Part2: Phan2,
+                                Content1: NoiDung1,
+                                Content2: NoiDung2,
+                                Photos1: dataPhotos1,
+                                Photos2: dataPhotos2,
+                                Videos: Phim,
+                                Covers: dataPhotosBanner
+                            }).then(() => {
+                                resetUnits();
+                            });
                         });
                     });
                 });
